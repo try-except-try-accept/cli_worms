@@ -29,8 +29,6 @@ class Game:
         self.world = World(worms)
         self.game_over = False
 
-
-
     def welcome(self):
         print("""   ______  _____     _____      ____      ____   ___   _______     ____    ____   ______   
  .' ___  ||_   _|   |_   _|    |_  _|    |_  _|.'   `.|_   __ \   |_   \  /   _|.' ____ \  
@@ -88,6 +86,29 @@ Player {} --- your team will be named:
 
         return worms
 
+    def action_help(self):
+        print("")
+        for a, min_, max_, exp in ACTIONS:
+            print(f"   - Type {a} x to {exp}. Minimum value for x is {min_}, maximum is {max_}.")
+        print()
+
+    def validate_action(self, command):
+        if command == "help":
+            return self.action_help()
+        try:
+            cmd, param = command.split(" ")
+        except:
+            return False
+        for a, min_, max_, exp in ACTIONS:
+            if cmd == a:
+                if param.isdigit():
+                    param = int(param)
+                    if param >= min_ and param <= max_:
+                        return True
+
+        return False
+
+
     def main_game_loop(self):
         print("Commencing airdrop in...")
         sleep(1)
@@ -98,13 +119,10 @@ Player {} --- your team will be named:
         sleep(2)
         system(CLEAR)
 
-
         self.world.air_drop()
 
         for worm in self.world.worms:
-
             if not worm.dead:
-
                 system(CLEAR)
                 self.world.display_scenery(worm)
                 print()
@@ -115,8 +133,10 @@ Player {} --- your team will be named:
                 print()
                 print(f"It's {worm.name}'s turn ({worm.team})")
 
-                input()
-                action = self.turn_menu()
+                action = input("Enter a command or type HELP for guidance! ")
+                while not self.validate_action(action):
+                    action = input("Enter a command: ")
+
                 self.world.act(worm, action)
 
 

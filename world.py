@@ -14,26 +14,26 @@ class World:
         shuffle(worms)
         self.worms = worms
 
-
-
-
-
     def air_drop(self):
         grounded = [False] * (WORMS_PER_TEAM * 2)
         while not all(grounded):
             grounded = [w.fall() for w in self.worms]
             self.display_scenery()
-            sleep(FRAME_SPEED)
+            sleep(FRAME_SPEED//2)
             system(CLEAR)
 
+    def act(self, worm, action):
+        command, action_frame = action.split(" ")
+        action_frame = int(action_frame)
+        system(CLEAR)
+        if command in ["left", "right"]:
 
-
-
-
-
-
-
-
+            while action_frame > 0:
+                action_frame -= 1
+                action_frame = worm.move(command, action_frame)
+                self.display_scenery()
+                sleep(FRAME_SPEED//2)
+                system(CLEAR)
 
     def create_scenery(self):
         grid = [[' ' for i in range(WIDTH)] for j in range(HEIGHT)]
@@ -67,8 +67,6 @@ class World:
             pass
 
         return grid
-
-
 
     def display_scenery(self, current_turn=None):
         if current_turn is not None:

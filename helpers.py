@@ -6,6 +6,12 @@ with open("assets/json/words.json") as f:
     file = loads(f.read())
     NOUNS, ADJECTIVES, NAMES = file['nouns'], file['adjectives'], file['names']
 
+with open("assets/txt/gravestones.txt", encoding="utf-8") as f:
+    GRAVESTONES = [line.strip() for line in f]
+
+def get_gravestone():
+    return rand_choice(GRAVESTONES)
+
 
 def get_death_msg(cause):
 

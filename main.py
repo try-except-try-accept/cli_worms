@@ -9,6 +9,10 @@ from game import Game
 
 # add worm
 
+# menu - left / right / amount
+
+#
+
 # movement
 
 # bomb!
