@@ -23,10 +23,12 @@ Leave blank to randomly generate.
 class Game:
 
     def __init__(self):
+        self.message_queue = []
         self.welcome()
         worms = self.create_worms()
         self.world = World(worms)
         self.game_over = False
+
 
 
     def welcome(self):
@@ -80,7 +82,7 @@ Player {} --- your team will be named:
 
                 while start_x in x_pos_used:
                     start_x = randint(0, WIDTH)
-                worms.append(Worm(worm_name, team, start_x, team_symbol))
+                worms.append(Worm(worm_name, team, start_x, team_symbol, self.message_queue))
 
                 x_pos_used.append(start_x)
 
@@ -105,6 +107,11 @@ Player {} --- your team will be named:
 
                 system("clear")
                 self.world.display_scenery(worm)
+                print()
+                print()
+                while len(self.message_queue):
+                    print(self.message_queue.pop(0))
+                    sleep(2)
                 print()
                 print(f"It's {worm.name}'s turn ({worm.team})")
 

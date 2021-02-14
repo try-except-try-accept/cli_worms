@@ -40,11 +40,11 @@ class World:
 
         y = ENTRY
 
-        draw = True
+        draw = 0   # miss out platform chunks if > 0.
         try:
             for x in range(WIDTH):
 
-                if draw:
+                if not draw:
                     if not randint(0, 1):
                         # go straight
                         grid[y][x] = "_"
@@ -56,6 +56,12 @@ class World:
                         # go up
                         grid[y][x] = "/"
                         y -= 1
+
+                if not randint(0, 3):
+                    draw = randint(5, 10)
+
+                if draw > 0:
+                    draw -= 1
 
         except:
             pass

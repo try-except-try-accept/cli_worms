@@ -6,6 +6,21 @@ with open("assets/json/words.json") as f:
     file = loads(f.read())
     NOUNS, ADJECTIVES, NAMES = file['nouns'], file['adjectives'], file['names']
 
+
+def get_death_msg(cause):
+
+    death_messages = ["""sunk to the bottom of the sea.
+died a salty death!
+was eaten by sharks.
+was fed to the fishes.
+sunk like an anchor!
+drowned their sorrows.
+went for a swim!""".split("\n")]
+
+    return rand_choice(death_messages[cause])
+
+
+
 def random_name(worm_name=False):
     name = ""
     if worm_name:
