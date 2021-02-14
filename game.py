@@ -1,7 +1,7 @@
 from time import sleep
 from json import loads
 
-from helpers import random_name
+from helpers import random_name, get_losing_team_msg
 from world import World
 
 from worm import Worm
@@ -25,9 +25,18 @@ class Game:
     def __init__(self):
         self.message_queue = []
         self.welcome()
+        self.teams = {}
         worms = self.create_worms()
         self.world = World(worms)
         self.game_over = False
+
+
+    def check_end_game(self):
+        for team, worms in self.teams.items():
+            if all([w.dead for w in worms]):
+                self.message_queue.append("{} {}".format(team, get_losing_team_msg()))
+                return True
+        return False
 
     def welcome(self):
         print("""   ______  _____     _____      ____      ____   ___   _______     ____    ____   ______   
@@ -60,6 +69,7 @@ Player {} --- your team will be named:
             
 {}
 """.format(p, team.upper()))
+            self.teams[team] = []
             sleep(1)
 
             for i in range(1, WORMS_PER_TEAM + 1):
@@ -80,8 +90,9 @@ Player {} --- your team will be named:
 
                 while start_x in x_pos_used:
                     start_x = randint(0, WIDTH)
-                worms.append(Worm(worm_name, team, start_x, team_symbol, self.message_queue))
-
+                new_worm = Worm(worm_name, team, start_x, team_symbol, self.message_queue)
+                worms.append(new_worm)
+                self.teams[team].append(new_worm)
                 x_pos_used.append(start_x)
 
         return worms
@@ -120,25 +131,37 @@ Player {} --- your team will be named:
         system(CLEAR)
 
         self.world.air_drop()
+        game_over = False
+        while not game_over:
 
-        for worm in self.world.worms:
-            if not worm.dead:
-                system(CLEAR)
-                self.world.display_scenery(worm)
+            for worm in self.world.worms:
+
+                game_over = self.check_end_game()
+
                 print()
                 print()
                 while len(self.message_queue):
                     print(self.message_queue.pop(0))
                     sleep(2)
                 print()
-                print(f"It's {worm.name}'s turn ({worm.team})")
+                sleep(1)
+                system(CLEAR)
 
-                action = input("Enter a command or type HELP for guidance! ")
-                while not self.validate_action(action):
-                    action = input("Enter a command: ")
 
-                self.world.act(worm, action)
+                if game_over:
+                    break
 
+                if not worm.dead:
+
+                    self.world.display_scenery(worm)
+
+                    print(f"It's {worm.name}'s turn ({worm.team})")
+
+                    action = input("Enter a command or type HELP for guidance! ")
+                    while not self.validate_action(action):
+                        action = input("Enter a command: ")
+
+                    self.world.act(worm, action)
 
 
 

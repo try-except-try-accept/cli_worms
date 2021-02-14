@@ -26,6 +26,17 @@ went for a swim!""".split("\n")]
     return rand_choice(death_messages[cause])
 
 
+def get_losing_team_msg():
+    msgs = '''was wiped off the face of the earth!
+was annihilated!
+disappeared from the battlefield.
+got obliterated!
+had no soldiers left...
+faced armageddon!!
+had no man left standing.'''.split('\n')
+
+    return rand_choice(msgs)
+
 
 def random_name(worm_name=False):
     name = ""

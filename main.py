@@ -17,9 +17,7 @@ from game import Game
 
 # bomb!
 
+if __name__ == "__main__":
 
-
-game = Game()
-
-while not game.game_over:
+    game = Game()
     game.main_game_loop()

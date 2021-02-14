@@ -17,23 +17,25 @@ class World:
     def air_drop(self):
         grounded = [False] * (WORMS_PER_TEAM * 2)
         while not all(grounded):
+            system(CLEAR)
             grounded = [w.fall() for w in self.worms]
             self.display_scenery()
             sleep(FRAME_SPEED//2)
-            system(CLEAR)
+
 
     def act(self, worm, action):
         command, action_frame = action.split(" ")
         action_frame = int(action_frame)
-        system(CLEAR)
+
         if command in ["left", "right"]:
 
             while action_frame > 0:
+                system(CLEAR)
                 action_frame -= 1
                 action_frame = worm.move(command, action_frame)
                 self.display_scenery()
                 sleep(FRAME_SPEED//2)
-                system(CLEAR)
+
 
     def create_scenery(self):
         grid = [[' ' for i in range(WIDTH)] for j in range(HEIGHT)]
@@ -45,10 +47,10 @@ class World:
             for x in range(WIDTH):
 
                 if not draw:
-                    if not randint(0, 1):
+                    if randint(0, 1):
                         # go straight
                         grid[y][x] = "_"
-                    elif not randint(0, 1):
+                    elif randint(0, 1):
                         # drop down
                         y += 1
                         grid[y][x] = "\\"
