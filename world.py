@@ -57,8 +57,8 @@ class World:
                         grid[y][x] = "/"
                         y -= 1
 
-                if not randint(0, 3):
-                    draw = randint(5, 10)
+                if not randint(0, 6):
+                    draw = randint(MIN_GAP_LENGTH, MAX_GAP_LENGTH)
 
                 if draw > 0:
                     draw -= 1
