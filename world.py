@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, shuffle
 from config import *
 from time import sleep
 from os import system
@@ -11,6 +11,7 @@ class World:
         self.grid = self.create_scenery()
         for w in worms:  # is this weird?
             w.grid = self.grid
+        shuffle(worms)
         self.worms = worms
 
 
@@ -24,6 +25,8 @@ class World:
             self.display_scenery()
             sleep(FRAME_SPEED)
             system("clear")
+
+
 
 
 
@@ -59,14 +62,24 @@ class World:
 
         return grid
 
-    def display_scenery(self):
-        worm_pos = {[w.y, w.x] for w in self.worms}
+
+
+    def display_scenery(self, current_turn=None):
+        if current_turn is not None:
+            worm_whose_turn = list(" ↙ " + (current_turn.name.split(" ")[0]))
+            print(current_turn.x, current_turn.y)
 
         for y, row in enumerate(self.grid):
-            for x, col in enumerate(row):
-                if [y, x] in worm_pos:
-                    print("S", end="")
+            for x, cell in enumerate(row):
+
+                if current_turn and current_turn.name_pos_check(x, y) and len(worm_whose_turn):
+                    print(worm_whose_turn.pop(0), end="")
                 else:
-                    print(col, end="")
+                    for w in self.worms:
+                        if w.x == x and w.y == y:
+                            print(w.symbol, end="")
+                            break
+                    else:
+                        print(cell, end="")
             print()
 

@@ -43,12 +43,13 @@ class Game:
             gen = True
 
         worms = []
-
-        for p in ["S", "Ƨ"]:
+        p = 0
+        for team_symbol in ["S", "Ƨ"]:
+            p += 1
             if gen:
                 team = random_name()
             else:
-                print(f"Player {p} --- enter team name:\n\n")
+                print(f"Player {p} ({team_symbol}) --- enter team name:\n\n")
                 team = input()
                 while len(team) < 4:
                     team = input("No - please give a team name: ")
@@ -71,7 +72,7 @@ Player {} --- your team will be named:
                         worm_name = input("No - please give a worm name: ")
 
                 print("{0} joined {1}!!!".format(worm_name.upper(), team))
-                sleep(randint(1, 4))
+                sleep(randint(1, TEAM_WAIT_TIME))
 
                 x_pos_used = []
 
@@ -79,7 +80,7 @@ Player {} --- your team will be named:
 
                 while start_x in x_pos_used:
                     start_x = randint(0, WIDTH)
-                worms.append(Worm(worm_name, team, start_x, symbol))
+                worms.append(Worm(worm_name, team, start_x, team_symbol))
 
                 x_pos_used.append(start_x)
 
@@ -90,13 +91,29 @@ Player {} --- your team will be named:
         sleep(1)
         for i in range(10, -1, -1):
             print(f" {i}")
-            sleep(1)
+            sleep(0.25)
         print("AWAY!")
         sleep(2)
         system("clear")
 
 
         self.world.air_drop()
+
+        for worm in self.world.worms:
+
+            if not worm.dead:
+
+                system("clear")
+                self.world.display_scenery(worm)
+                print()
+                print(f"It's {worm.name}'s turn ({worm.team})")
+
+                input()
+                action = self.turn_menu()
+                self.world.act(worm, action)
+
+
+
 
 
 

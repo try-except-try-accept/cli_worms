@@ -11,7 +11,7 @@ def random_name(worm_name=False):
     if worm_name:
 
         if not randint(0, 5):
-            name = rand_choice('Dr.,Mr.,Miss,Master,Ms.,Mrs.General,Sergeant,Commander,Lieutenant,Corporal,Chancellor,Prime Minister,President'.split(',')) + " "
+            name = rand_choice('Dr.,Mr.,Miss,Master,Ms.,Mrs.,General,Sergeant,Commander,Lieutenant,Corporal,Chancellor,Prime Minister,President'.split(',')) + " "
 
         if not randint(0, 3):
             name += rand_choice(NAMES)
