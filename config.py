@@ -1,3 +1,10 @@
+import platform
+
+if platform.system() ==  "Windows":
+    CLEAR = "CLS"
+else:
+    CLEAR = "clear"
+
 WORMS_PER_TEAM = 5
 HEIGHT = 30
 WIDTH = 200

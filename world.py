@@ -24,7 +24,7 @@ class World:
             grounded = [w.fall() for w in self.worms]
             self.display_scenery()
             sleep(FRAME_SPEED)
-            system("clear")
+            system(CLEAR)
 
 
 

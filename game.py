@@ -96,7 +96,7 @@ Player {} --- your team will be named:
             sleep(0.25)
         print("AWAY!")
         sleep(2)
-        system("clear")
+        system(CLEAR)
 
 
         self.world.air_drop()
@@ -105,7 +105,7 @@ Player {} --- your team will be named:
 
             if not worm.dead:
 
-                system("clear")
+                system(CLEAR)
                 self.world.display_scenery(worm)
                 print()
                 print()
