@@ -72,7 +72,7 @@ Player {} --- your team will be named:
 {}
 """.format(p, team.upper()))
             self.teams[team] = []
-            sleep(1)
+            sleep(INTRO_FRAME_SPEED)
 
             for i in range(1, WORMS_PER_TEAM + 1):
                 if gen:
@@ -138,6 +138,9 @@ Player {} --- your team will be named:
         while not game_over:
 
             for worm in self.world.worms:
+
+                if TEST_MODE:
+                    worm = min([w for w in self.world.worms if not w.dead])
 
                 game_over = self.check_end_game()
 

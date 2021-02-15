@@ -80,6 +80,8 @@ class World:
             self.display_scenery()
             self.display_msg_history()
             sleep(frame_speed)
+        worm.end_action()
+
 
 
     def create_scenery(self):
