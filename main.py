@@ -13,8 +13,9 @@ from game import Game
 # 6 prevent jumping off side of screen X
 # 7 stack up land X
 # 8 worms are always falling ish
-# 9 implement 'gun' animation
+# 9 implement 'gun' animation X
 # refactor sprite class
+# garbage collect
 # 10 implement 'mine' animation
 # 11 implement 'bomb' animation
 # 12 implement worm damage  / HP

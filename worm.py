@@ -2,17 +2,18 @@
 from config import *
 from helpers import get_death_msg, get_gravestone, get_boundary_msg
 from random import randint, choice as rand_choice
+from sprite import Sprite
 
-class Worm:
+class Worm(Sprite):
     def __init__(self, name, team, start_x, symbol, msg_queue):
+        x = start_x
+        y = randint(-WORMS_PER_TEAM, 0)
+        super().__init__(x, y, symbol, False)
+
         self.msgs = msg_queue
         self.name = name
         self.team = team
-        self.symbol = symbol
-        self.x = start_x
-        self.y = randint(-WORMS_PER_TEAM, 0)
         self.dead = False
-        self.visible = False
         self.jump_queue = []
         self.jumping = False
         self.frame_speed = FRAME_SPEED
@@ -26,24 +27,8 @@ class Worm:
         '''Allow leftmost worm to be selected for testing'''
         return self.x < other.x
 
-    def check_out_of_bounds(self, check_horiz=True):
-        if not check_horiz:
-            if self.y > HEIGHT-2:
-                self.y = HEIGHT-2
-                return True
-            elif self.y < 0:
-                self.y = 0
-                return True
-        else:
-            if self.x > WIDTH - 1:
-                self.msgs.append(get_boundary_msg(self.name, self.gender))
-                self.x = WIDTH - 1
-                return True
-            elif self.x < 0:
-                self.msgs.append(get_boundary_msg(self.name, self.gender))
-                self.x = 0
-                return True
-        return False
+    def out_of_bounds_msg(self):
+        self.msgs.append(get_boundary_msg(self.name, self.gender))
 
     def fall(self):
         '''Increase y axis to fall, return True if make contact
@@ -125,8 +110,8 @@ class Worm:
 
         self.frame_speed += 0.01
 
-        if self.check_out_of_bounds(True):
-            return self.frame_speed, 0
+        # if self.check_out_of_bounds(True):
+        #     return self.frame_speed, 0
 
         if vel == -1 and self.grid[self.y][self.x] == "\\":
              self.y -= 1
@@ -134,7 +119,7 @@ class Worm:
              self.y -= 1
 
         self.x += vel
-        if self.check_out_of_bounds():
+        if self.check_out_of_bounds(resultant_action=self.out_of_bounds_msg):
             return self.frame_speed, 0
 
         self.fall()

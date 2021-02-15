@@ -1,4 +1,5 @@
 from config import *
+from sprite import Sprite
 
 class Weapon:
 
@@ -20,7 +21,7 @@ class Weapon:
 
 
 
-class Arrow(Weapon):
+class Arrow(Sprite):
 
     def __init__(self, x, y, grid):
         super().__init__(x, y, grid)

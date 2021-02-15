@@ -15,7 +15,7 @@ class World:
         self.msg_history = msg_history
         # so everything 'knows about' it ?
         for w in worms:  # is this weird?
-            w.grid = self.grid
+            w.set_grid(self.grid)
         shuffle(worms)
         self.worms = worms
         self.arrows = []
