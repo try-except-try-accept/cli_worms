@@ -12,7 +12,6 @@ with open("assets/txt/gravestones.txt", encoding="utf-8") as f:
 def get_gravestone():
     return rand_choice(GRAVESTONES)
 
-
 def get_death_msg(cause, gender):
 
     death_messages = ["""sunk to the bottom of the sea.
@@ -41,10 +40,7 @@ def get_boundary_msg(w, gender):
 {0} found {1}self in the Truman Show...
 No surrender, no departure {0}!'''.format(w, "him" if gender == "male" else "her").split("\n")
 
-
-
     return rand_choice(msgs)
-
 
 def get_losing_team_msg():
     msgs = '''was wiped off the face of the earth!
@@ -56,7 +52,6 @@ faced armageddon!!
 had no one left standing.'''.split('\n')
 
     return rand_choice(msgs)
-
 
 def random_name(worm_name=False):
     name = ""
@@ -82,7 +77,6 @@ def random_name(worm_name=False):
 
     else:
 
-
         noun_needed = False
         article = False
         if randint(0, 2):
@@ -102,10 +96,8 @@ def random_name(worm_name=False):
 
             article = True
 
-
         if randint(0, 1) and not noun_needed:
             name += " " + rand_choice(ADJECTIVES)
-
 
         name += " " + rand_choice(NOUNS)
 
@@ -118,8 +110,5 @@ def random_name(worm_name=False):
             else:
                 if not randint(0, 2):
                     name += name[-1] + rand_choice("y,o,a,ee,ox".split(","))
-
-
-
 
     return name.title().replace("  ", " ").replace("'S", "'s")

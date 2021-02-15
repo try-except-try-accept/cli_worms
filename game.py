@@ -11,15 +11,6 @@ from random import randint
 
 from config import *
 
-CONFIG_MSG = {
-
-"input_or_generate":"""Enter any key to set team and worm names
-Leave blank to randomly generate.
-""",
-
-
-              }
-
 class Game:
 
     def __init__(self):
@@ -32,7 +23,6 @@ class Game:
         self.world = World(worms, self.msg_queue, self.msg_history)
         self.game_over = False
 
-
     def check_end_game(self):
         for team, worms in self.teams.items():
             if all([w.dead for w in worms]):
@@ -41,16 +31,11 @@ class Game:
         return False
 
     def welcome(self):
-        print("""   ______  _____     _____      ____      ____   ___   _______     ____    ____   ______   
- .' ___  ||_   _|   |_   _|    |_  _|    |_  _|.'   `.|_   __ \   |_   \  /   _|.' ____ \  
-/ .'   \_|  | |       | |        \ \  /\  / / /  .-.  \ | |__) |    |   \/   |  | (___ \_| 
-| |         | |   _   | |         \ \/  \/ /  | |   | | |  __ /     | |\  /| |   _.____`.  
-\ `.___.'\ _| |__/ | _| |_         \  /\  /   \  `-'  /_| |  \ \_  _| |_\/_| |_ | \____) | 
- `.____ .'|________||_____|         \/  \/     `.___.'|____| |___||_____||_____| \______.' """)
+        print(LOGO)
 
     def create_worms(self):
         gen = False
-        if not input(CONFIG_MSG["input_or_generate"]):
+        if not input(CONFIG_MSGS["input_or_generate"]):
             gen = True
 
         worms = []
@@ -118,7 +103,6 @@ Player {} --- your team will be named:
                     param = int(param)
                     if param >= min_ and param <= max_:
                         return True
-
         return False
 
     def display_game_and_cli(self, special_data=None):
@@ -128,11 +112,9 @@ Player {} --- your team will be named:
         self.world.display_msg_history()
         self.world.display_msg_queue()
 
-
     def main_game_loop(self):
 
         self.world.air_drop()
-
 
         game_over = False
         while not game_over:
@@ -144,15 +126,10 @@ Player {} --- your team will be named:
 
                 game_over = self.check_end_game()
 
-
-
-
                 if game_over:
                     break
 
                 if not worm.dead:
-
-
                     self.display_game_and_cli(worm)
 
                     print()

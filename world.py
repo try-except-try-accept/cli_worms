@@ -17,7 +17,7 @@ class World:
             w.grid = self.grid
         shuffle(worms)
         self.worms = worms
-        
+
     def display_msg_history(self):
         print()
         print()
@@ -72,8 +72,6 @@ class World:
         elif command in ["ljump", "rjump"]:
             func = worm.jump
 
-
-
         while action_frame > 0:
             system(CLEAR)
             frame_speed, action_frame = func(command[0], action_frame)
@@ -81,8 +79,6 @@ class World:
             self.display_msg_history()
             sleep(frame_speed)
         worm.end_action()
-
-
 
     def create_scenery(self):
         grid = [[' ' for i in range(WIDTH)] for j in range(HEIGHT)]

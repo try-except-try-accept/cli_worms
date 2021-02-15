@@ -81,10 +81,8 @@ class Worm:
 
     @interrupt_if_dead
     def jump(self, direction, frame):
+
         x_vel = 1 if direction == "r" else -1
-
-        print(self.x, self.y)
-
 
         if self.falling:
             landed = self.fall()
@@ -95,7 +93,13 @@ class Worm:
 
         elif not self.jumping: # start of jump so populate queue
             self.jumping = True
-            self.jump_queue = ([1] * frame) + ([-1] * frame)
+            self.jump_
+
+
+
+
+
+queue = ([1] * frame) + ([-1] * frame)
             self.frame_speed = FRAME_SPEED / 1.5
             self.y -= 1
 
@@ -121,17 +125,8 @@ class Worm:
 
         return self.frame_speed, frame
 
-
-
-
-
-
-
     @interrupt_if_dead
     def move(self, direction, frame):
-        # if self.dead:
-        #     return 0
-
         vel = 1 if direction == "r" else -1
 
         self.frame_speed += 0.01
@@ -151,16 +146,8 @@ class Worm:
             else:
                 return self.frame_speed, frame
 
-
-
         self.x += vel
         return self.frame_speed, frame - 1
-
-
-
-
-
-
 
     def name_pos_check(self, grid_x, grid_y):
         '''Check grid pos against worm pos, return True if name
