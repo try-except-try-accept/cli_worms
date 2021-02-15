@@ -93,13 +93,16 @@ class World:
                     if randint(0, 1):
                         # go straight
                         grid[y][x] = "_"
+                        grid[y+2][x] = "_"
                     elif randint(0, 1):
                         # drop down
                         y += 1
                         grid[y][x] = "\\"
+                        grid[y + 2][x] = "\\"
                     else:
                         # go up
                         grid[y][x] = "/"
+                        grid[y+2][x] = "/"
                         y -= 1
 
                 if not randint(0, 6):

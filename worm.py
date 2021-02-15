@@ -93,13 +93,7 @@ class Worm:
 
         elif not self.jumping: # start of jump so populate queue
             self.jumping = True
-            self.jump_
-
-
-
-
-
-queue = ([1] * frame) + ([-1] * frame)
+            self.jump_queue = ([1] * frame) + ([-1] * frame)
             self.frame_speed = FRAME_SPEED / 1.5
             self.y -= 1
 
@@ -134,19 +128,13 @@ queue = ([1] * frame) + ([-1] * frame)
         if self.check_out_of_bounds(True):
             return self.frame_speed, 0
 
-        if self.grid[self.y+1][self.x] in ["/", "\\"]:
-            self.y += 1
-        elif self.grid[self.y][self.x] in ["/", "\\"]:
-            self.y -= 1
-        elif self.grid[self.y][self.x] == "_":
-            pass
-        else:
-            if self.fall():
-                return self.frame_speed, 0
-            else:
-                return self.frame_speed, frame
+        if vel == -1 and self.grid[self.y][self.x] == "\\":
+             self.y -= 1
+        elif vel == 1 and self.grid[self.y][self.x] == "/":
+             self.y -= 1
 
         self.x += vel
+        self.fall()
         return self.frame_speed, frame - 1
 
     def name_pos_check(self, grid_x, grid_y):
