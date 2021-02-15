@@ -1,6 +1,6 @@
 
 from config import *
-from helpers import get_death_msg, get_gravestone
+from helpers import get_death_msg, get_gravestone, get_boundary_msg
 
 class Worm:
     def __init__(self, name, team, start_x, symbol, msg_queue):
@@ -46,6 +46,10 @@ class Worm:
                 return 0
             else:
                 return value + 1
+
+        if self.x == 0 or self.x == WIDTH-1:
+            self.msgs.append(get_boundary_msg(self.name))
+            return 0
         self.x += d
         return value
 

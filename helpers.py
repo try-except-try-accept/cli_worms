@@ -32,6 +32,17 @@ Reinforcements!!!'''.split('\n')
 
     return rand_choice(msgs)
 
+def get_boundary_msg(w):
+    gender_belong = rand_choice(["himself", "herself"])
+    msgs = '''{0} tried to escape!
+{0} made a run for it!
+... and the end of the world was reached by {0}.
+{0} hit a brick wall!
+{0} found {1} in the Truman Show...
+No surrender, no departure {0}!'''.format(w, gender_belong).split("\n")
+
+    return rand_choice(msgs)
+
 
 def get_losing_team_msg():
     msgs = '''was wiped off the face of the earth!
@@ -58,7 +69,9 @@ def random_name(worm_name=False):
             name += rand_choice(rand_choice(NAMES).split())
 
 
-            if not randint(0, 2):
+            if not randint(0, 5):
+                name += str(randint(11, 999))
+            elif not randint(0, 2):
                 name = name
             elif randint(0, 1):
                 name += " The " + rand_choice(NOUNS).title()
@@ -69,15 +82,19 @@ def random_name(worm_name=False):
 
 
         noun_needed = False
+        article = False
         if randint(0, 2):
             name = rand_choice(ADJECTIVES)
         elif randint(0, 1):
             name = rand_choice(NOUNS)
-        else:
+        elif randint(0, 1):
             name = rand_choice(rand_choice(NAMES).split()) + "'s"
             if not randint(0, 3):
                 name += " " + rand_choice(ADJECTIVES)
                 noun_needed = True
+        else:
+            name = rand_choice("The,Those,Some,We,Us,Team,Council of,The,Three".split("\n"))
+            article = True
 
 
         if randint(0, 1) and not noun_needed:
@@ -86,8 +103,17 @@ def random_name(worm_name=False):
 
         name += " " + rand_choice(NOUNS)
 
-        if name[-1] != "s" and randint(0, 1):
+        if name[-1] != "s" and randint(0, 1) and not article:
             name += "s"
+
+        if article:
+            if name[-1] not in "aeiou":
+                name += rand_choice("tes,cies,ts,ps,x,z".split("\n"))
+            else:
+                if not randint(0, 2):
+                    name += name[-1] + rand_choice("y,o,a,ee,ox".split("\n"))
+
+
 
 
     return name.title().replace("  ", " ").replace("'S", "'s")

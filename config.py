@@ -5,11 +5,11 @@ if platform.system() == "Windows":
 else:
     CLEAR = "clear"
 
-WORMS_PER_TEAM = 1
+WORMS_PER_TEAM = 5
 HEIGHT = 30
 WIDTH = 100
 FRAME_SPEED = 0.12
-MAX_TEAM_SIGNUP = 0
+MAX_TEAM_SIGNUP = 1
 MIN_TEAM_SIGNUP = 0
 NAME_DISTANCE = 1
 MIN_GAP_LENGTH = 2
