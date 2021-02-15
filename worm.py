@@ -134,7 +134,11 @@ class Worm:
              self.y -= 1
 
         self.x += vel
+        if self.check_out_of_bounds():
+            return self.frame_speed, 0
+
         self.fall()
+
         return self.frame_speed, frame - 1
 
     def name_pos_check(self, grid_x, grid_y):

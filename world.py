@@ -3,8 +3,9 @@ from config import *
 from time import sleep
 from os import system
 from helpers import get_airdrop_msg
+from weapon import Arrow
 
-ENTRY = randint(int(HEIGHT * 0.25), int(HEIGHT * 0.75))
+ENTRY = randint(int(HEIGHT * 0.33), int(HEIGHT * 0.66))
 
 class World:
 
@@ -17,6 +18,7 @@ class World:
             w.grid = self.grid
         shuffle(worms)
         self.worms = worms
+        self.arrows = []
 
     def display_msg_history(self):
         print()
@@ -63,7 +65,7 @@ class World:
 
         system(CLEAR)
 
-    def act(self, worm, action):
+    def enact(self, worm, action):
         command, action_frame = action.split(" ")
         action_frame = int(action_frame)
 
@@ -71,6 +73,9 @@ class World:
             func = worm.move
         elif command in ["ljump", "rjump"]:
             func = worm.jump
+        elif command in ["shoot"]:
+            self.arrows.append(Arrow(worm.x, worm.y, self.grid))
+            func = self.arrows[-1].fire
 
         while action_frame > 0:
             system(CLEAR)
@@ -93,15 +98,18 @@ class World:
                     if randint(0, 1):
                         # go straight
                         grid[y][x] = "_"
+                        grid[y+1][x] = "_"
                         grid[y+2][x] = "_"
                     elif randint(0, 1):
                         # drop down
                         y += 1
                         grid[y][x] = "\\"
-                        grid[y + 2][x] = "\\"
+                        grid[y+1][x] = "\\"
+                        grid[y+2][x] = "\\"
                     else:
                         # go up
                         grid[y][x] = "/"
+                        grid[y+1][x] = "/"
                         grid[y+2][x] = "/"
                         y -= 1
 
@@ -126,10 +134,11 @@ class World:
                 if current_turn and current_turn.name_pos_check(x, y) and len(worm_whose_turn):
                     print(worm_whose_turn.pop(0), end="")
                 else:
-                    for w in self.worms:
-                        if w.visible and w.x == x and w.y == y:
-                            print(w.symbol, end="")
+                    for sprite in self.worms + self.arrows:
+                        if sprite.visible and sprite.x == x and sprite.y == y:
+                            print(sprite.symbol, end="")
                             break
+
                     else:
                         print(cell, end="")
             print()

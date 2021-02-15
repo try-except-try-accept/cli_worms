@@ -5,7 +5,7 @@ if platform.system() == "Windows":
 else:
     CLEAR = "clear"
 
-WORMS_PER_TEAM = 8
+WORMS_PER_TEAM = 3
 HEIGHT = 30
 WIDTH = 200
 FRAME_SPEED = 0.125
@@ -20,9 +20,19 @@ TEST_MODE = True
 ACTIONS = [["left", 1, 30, "to move to the left by a number of characters."],
            ["right", 1, 10, "to move to the left by a number of characters."],
            ["ljump", 1, 10, "to jump leftwards by a specific height."],
-           ["rjump", 1, 10, "to jump rightwards by a specific height."]]
+           ["rjump", 1, 10, "to jump rightwards by a specific height."],
+           ["shoot", 0, 6, "to shoot in a certain direction."]]
 
 
+
+D_MAP = [[1, -1, '🡥'],
+         [1, 0, '🡪'],
+         [1, 1, '🡦'],
+         [0, 1, '🡣'],
+         [-1, 1, '🡧'],
+         [-1, 0, '🡨'],
+         [-1, -1, '🡤'],
+         [0, -1, '🡡']]
 
 CONFIG_MSGS = {
 

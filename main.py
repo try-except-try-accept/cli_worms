@@ -11,9 +11,10 @@ from game import Game
 # 4 implement jump followed by fall X
 # 5 fix maximum Y bound bug - dead if on platform
 # 6 prevent jumping off side of screen X
-# 7 stack up land
-# 8 worms are always falling
+# 7 stack up land X
+# 8 worms are always falling ish
 # 9 implement 'gun' animation
+# refactor sprite class
 # 10 implement 'mine' animation
 # 11 implement 'bomb' animation
 # 12 implement worm damage  / HP

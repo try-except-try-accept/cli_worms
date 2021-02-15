@@ -73,10 +73,10 @@ Player {} --- your team will be named:
 
                 x_pos_used = []
 
-                start_x = randint(0, WIDTH-1)
+                start_x = randint(1, WIDTH-2)
 
                 while start_x in x_pos_used:
-                    start_x = randint(0, WIDTH-1)
+                    start_x = randint(1, WIDTH-2)
                 new_worm = Worm(worm_name, team, start_x, team_symbol, self.msg_queue)
                 worms.append(new_worm)
                 self.teams[team].append(new_worm)
@@ -143,6 +143,6 @@ Player {} --- your team will be named:
                         action = input("Enter a command: ")
                     self.msg_history.append(f"{worm.name} decided to *{action}*")
 
-                    self.world.act(worm, action)
+                    self.world.enact(worm, action)
 
             self.display_game_and_cli()
