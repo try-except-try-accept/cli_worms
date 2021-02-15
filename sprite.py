@@ -14,22 +14,30 @@ class Sprite:
 
 
     def check_out_of_bounds(self, check_horiz=True, check_vert=False, resolve_position=True, resultant_action=print):
-        if not check_horiz:
+        reset_y, reset_x = None, None
+
+        if check_vert:
             if self.y > HEIGHT-1:
-                if resolve_position:
-                    self.y = HEIGHT-2
-                return True
+                reset_y = HEIGHT-1
             elif self.y < 0:
-                if resolve_position:
-                    self.y = 0
-                return True
-        else:
+                reset_y = 0
+
+        if check_horiz:
             if self.x > WIDTH - 1:
-                if resolve_position:
-                    self.x = WIDTH - 1
-                return True
+                reset_x = WIDTH - 1
             elif self.x < 0:
-                if resolve_position:
-                    self.x = 0
-                return True
-        return False
+                reset_x = 0
+
+        if reset_y is not None:
+            self.y = reset_y
+
+        elif reset_x is not None:
+            self.x = reset_x
+
+        else:
+            return False
+
+        resultant_action() # call bound function to deal with out-of-bounds
+        return True
+
+

@@ -18,7 +18,7 @@ class World:
             w.set_grid(self.grid)
         shuffle(worms)
         self.worms = worms
-        self.arrows = []
+        self.uxo = []
 
     def display_msg_history(self):
         print()
@@ -65,6 +65,9 @@ class World:
 
         system(CLEAR)
 
+    def remove_weapon(self, item):
+        self.uxo.remove(item)
+
     def enact(self, worm, action):
         command, action_frame = action.split(" ")
         action_frame = int(action_frame)
@@ -74,8 +77,8 @@ class World:
         elif command in ["ljump", "rjump"]:
             func = worm.jump
         elif command in ["shoot"]:
-            self.arrows.append(Arrow(worm.x, worm.y, self.grid))
-            func = self.arrows[-1].fire
+            self.uxo.append(Arrow(worm.x, worm.y, self.grid, self.uxo))
+            func = self.uxo[-1].fire
 
         while action_frame > 0:
             system(CLEAR)
@@ -134,7 +137,7 @@ class World:
                 if current_turn and current_turn.name_pos_check(x, y) and len(worm_whose_turn):
                     print(worm_whose_turn.pop(0), end="")
                 else:
-                    for sprite in self.worms + self.arrows:
+                    for sprite in self.worms + self.uxo:
                         if sprite.visible and sprite.x == x and sprite.y == y:
                             print(sprite.symbol, end="")
                             break
