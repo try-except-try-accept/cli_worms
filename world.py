@@ -7,12 +7,27 @@ ENTRY = randint(int(HEIGHT * 0.25), int(HEIGHT * 0.75))
 
 class World:
 
-    def __init__(self, worms):
+    def __init__(self, worms, msg_queue, msg_history):
         self.grid = self.create_scenery()
+        self.msg_queue = msg_queue # is this weird? am i allowed to pass a list between objects
+        self.msg_history = msg_history
+        # so everything 'knows about' it ?
         for w in worms:  # is this weird?
             w.grid = self.grid
         shuffle(worms)
         self.worms = worms
+        
+    def display_msg_history(self):
+        print()
+        print()
+        print("\n".join(self.msg_history[-5:]))
+
+    def display_msg_queue(self):
+        while len(self.msg_queue) > 0:
+            msg = self.msg_queue.pop(0)
+            self.msg_history.append(msg)
+            print(msg)
+            sleep(1)
 
     def air_drop(self):
         grounded = [False] * (WORMS_PER_TEAM * 2)
@@ -20,7 +35,8 @@ class World:
             system(CLEAR)
             grounded = [w.fall() for w in self.worms]
             self.display_scenery()
-            sleep(FRAME_SPEED//2)
+            self.display_msg_history()
+            sleep(FRAME_SPEED)
 
 
     def act(self, worm, action):
@@ -34,7 +50,8 @@ class World:
                 action_frame -= 1
                 action_frame = worm.move(command, action_frame)
                 self.display_scenery()
-                sleep(FRAME_SPEED//2)
+                self.display_msg_history()
+                sleep(FRAME_SPEED)
 
 
     def create_scenery(self):
@@ -73,7 +90,6 @@ class World:
     def display_scenery(self, current_turn=None):
         if current_turn is not None:
             worm_whose_turn = list(" ↙ " + (current_turn.name.split(" ")[0]))
-            print(current_turn.x, current_turn.y)
 
         for y, row in enumerate(self.grid):
             for x, cell in enumerate(row):
@@ -88,4 +104,6 @@ class World:
                     else:
                         print(cell, end="")
             print()
+
+
 

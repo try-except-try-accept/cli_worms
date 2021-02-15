@@ -23,18 +23,20 @@ Leave blank to randomly generate.
 class Game:
 
     def __init__(self):
-        self.message_queue = []
+        self.msg_queue = []
+        self.msg_history = []
+
         self.welcome()
         self.teams = {}
         worms = self.create_worms()
-        self.world = World(worms)
+        self.world = World(worms, self.msg_queue, self.msg_history)
         self.game_over = False
 
 
     def check_end_game(self):
         for team, worms in self.teams.items():
             if all([w.dead for w in worms]):
-                self.message_queue.append("{} {}".format(team, get_losing_team_msg()))
+                self.msg_queue.append("{} {}".format(team, get_losing_team_msg()))
                 return True
         return False
 
@@ -82,7 +84,7 @@ Player {} --- your team will be named:
                         worm_name = input("No - please give a worm name: ")
 
                 print("{0} joined {1}!!!".format(worm_name.upper(), team))
-                sleep(randint(1, TEAM_WAIT_TIME))
+                sleep(randint(MIN_TEAM_SIGNUP, MAX_TEAM_SIGNUP))
 
                 x_pos_used = []
 
@@ -90,7 +92,7 @@ Player {} --- your team will be named:
 
                 while start_x in x_pos_used:
                     start_x = randint(0, WIDTH)
-                new_worm = Worm(worm_name, team, start_x, team_symbol, self.message_queue)
+                new_worm = Worm(worm_name, team, start_x, team_symbol, self.msg_queue)
                 worms.append(new_worm)
                 self.teams[team].append(new_worm)
                 x_pos_used.append(start_x)
@@ -119,6 +121,13 @@ Player {} --- your team will be named:
 
         return False
 
+    def display_game_and_cli(self, special_data=None):
+        worm = special_data if type(special_data) == Worm else None
+        system(CLEAR)
+        self.world.display_scenery(worm)
+        self.world.display_msg_history()
+        self.world.display_msg_queue()
+
 
     def main_game_loop(self):
         print("Commencing airdrop in...")
@@ -129,8 +138,9 @@ Player {} --- your team will be named:
         print("AWAY!")
         sleep(2)
         system(CLEAR)
-
         self.world.air_drop()
+        system(CLEAR)
+
         game_over = False
         while not game_over:
 
@@ -138,14 +148,7 @@ Player {} --- your team will be named:
 
                 game_over = self.check_end_game()
 
-                print()
-                print()
-                while len(self.message_queue):
-                    print(self.message_queue.pop(0))
-                    sleep(2)
-                print()
-                sleep(1)
-                system(CLEAR)
+
 
 
                 if game_over:
@@ -153,24 +156,20 @@ Player {} --- your team will be named:
 
                 if not worm.dead:
 
-                    self.world.display_scenery(worm)
 
-                    print(f"It's {worm.name}'s turn ({worm.team})")
+                    self.display_game_and_cli(worm)
 
+                    print()
+                    sleep(1)
+
+                    turn_msg = f"It's {worm.name}'s turn ({worm.team})"
+                    self.msg_history.append(turn_msg.replace("It's", "It was"))
+                    print(turn_msg)
                     action = input("Enter a command or type HELP for guidance! ")
                     while not self.validate_action(action):
                         action = input("Enter a command: ")
+                    self.msg_history.append(f"{worm.name} decided to *{action}*")
 
                     self.world.act(worm, action)
 
-
-
-
-
-
-
-
-
-
-
-
+            self.display_game_and_cli()

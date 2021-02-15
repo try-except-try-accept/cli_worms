@@ -33,7 +33,7 @@ disappeared from the battlefield.
 got obliterated!
 had no soldiers left...
 faced armageddon!!
-had no man left standing.'''.split('\n')
+had no one left standing.'''.split('\n')
 
     return rand_choice(msgs)
 

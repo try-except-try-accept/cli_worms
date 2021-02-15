@@ -3,19 +3,17 @@
 from game import Game
 
 
-# plan
+# bomb!
 
-# create landscape
-
-# add worm
-
-# menu - left / right / amount
-
+# 1 message queue fixes
+# 2 fix index error start bug + randomise slightly starting y indices
+#
+#
+#
+#
+#
 #
 
-# movement
-
-# bomb!
 
 if __name__ == "__main__":
 

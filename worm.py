@@ -3,8 +3,8 @@ from config import *
 from helpers import get_death_msg, get_gravestone
 
 class Worm:
-    def __init__(self, name, team, start_x, symbol, message_queue):
-        self.msgs = message_queue
+    def __init__(self, name, team, start_x, symbol, msg_queue):
+        self.msgs = msg_queue
         self.name = name
         self.team = team
         self.symbol = symbol
