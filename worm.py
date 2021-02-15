@@ -1,6 +1,7 @@
 
 from config import *
 from helpers import get_death_msg, get_gravestone, get_boundary_msg
+from random import randint
 
 class Worm:
     def __init__(self, name, team, start_x, symbol, msg_queue):
@@ -9,8 +10,9 @@ class Worm:
         self.team = team
         self.symbol = symbol
         self.x = start_x
-        self.y = 0
+        self.y = randint(-WORMS_PER_TEAM, 0)
         self.dead = False
+        self.visible = False
 
     def fall(self):
         '''Increase y axis to fall, return True if make contact
@@ -19,10 +21,14 @@ class Worm:
 
         if self.grid[self.y][self.x] == " ":
             self.y += 1
+
+            if self.y >= 0:          # random fall points - do not show until visible
+                self.visible = True
+
             if self.y == len(self.grid) - 2:
                 self.symbol = get_gravestone()
                 self.dead = True
-                self.msgs.append("{} {}".format(self.name, get_death_msg(0)))
+                self.msgs.append("{} {} {}".format(self.symbol, self.name, get_death_msg(0)))
                 return True
             return False
         else:

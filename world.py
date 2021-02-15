@@ -123,7 +123,7 @@ class World:
                     print(worm_whose_turn.pop(0), end="")
                 else:
                     for w in self.worms:
-                        if w.x == x and w.y == y:
+                        if w.visible and w.x == x and w.y == y:
                             print(w.symbol, end="")
                             break
                     else:

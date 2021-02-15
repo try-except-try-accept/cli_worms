@@ -88,10 +88,10 @@ Player {} --- your team will be named:
 
                 x_pos_used = []
 
-                start_x = randint(0, WIDTH)
+                start_x = randint(0, WIDTH-1)
 
                 while start_x in x_pos_used:
-                    start_x = randint(0, WIDTH)
+                    start_x = randint(0, WIDTH-1)
                 new_worm = Worm(worm_name, team, start_x, team_symbol, self.msg_queue)
                 worms.append(new_worm)
                 self.teams[team].append(new_worm)
