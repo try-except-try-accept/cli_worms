@@ -45,12 +45,12 @@ class World:
             dropped_items = self.worms
 
         print("Commencing airdrop in...")
-        sleep(1)
+        sleep(INTRO_FRAME_SPEED)
         for i in range(countdown, -1, -1):
             print(f" {i}")
-            sleep(0.25)
+            sleep(INTRO_FRAME_SPEED / 4)
         print("AWAY!")
-        sleep(2)
+        sleep(INTRO_FRAME_SPEED * 2)
         system(CLEAR)
 
         grounded = [False] * (WORMS_PER_TEAM * 2)
@@ -63,20 +63,23 @@ class World:
 
         system(CLEAR)
 
-
     def act(self, worm, action):
         command, action_frame = action.split(" ")
         action_frame = int(action_frame)
 
         if command in ["left", "right"]:
+            func = worm.move
+        elif command in ["ljump", "rjump"]:
+            func = worm.jump
 
-            while action_frame > 0:
-                system(CLEAR)
-                action_frame -= 1
-                action_frame = worm.move(command, action_frame)
-                self.display_scenery()
-                self.display_msg_history()
-                sleep(FRAME_SPEED)
+
+
+        while action_frame > 0:
+            system(CLEAR)
+            frame_speed, action_frame = func(command[0], action_frame)
+            self.display_scenery()
+            self.display_msg_history()
+            sleep(frame_speed)
 
 
     def create_scenery(self):

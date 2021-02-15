@@ -93,7 +93,11 @@ def random_name(worm_name=False):
                 name += " " + rand_choice(ADJECTIVES)
                 noun_needed = True
         else:
-            name = rand_choice("The,Those,Some,We,Us,Team,Council of,The,Three".split("\n"))
+            if randint(0, 1):
+                name = rand_choice("Which,We Are,The,Those,Some,We,Us,Team,The,Three".split(","))
+            else:
+                name = rand_choice("The {} of The".format(rand_choice("Council,Board,Society,Chairmanship".split(","))))
+
             article = True
 
 
@@ -108,10 +112,10 @@ def random_name(worm_name=False):
 
         if article:
             if name[-1] not in "aeiou":
-                name += rand_choice("tes,cies,ts,ps,x,z".split("\n"))
+                name += rand_choice("tes,cies,ts,ps,x,z".split(","))
             else:
                 if not randint(0, 2):
-                    name += name[-1] + rand_choice("y,o,a,ee,ox".split("\n"))
+                    name += name[-1] + rand_choice("y,o,a,ee,ox".split(","))
 
 
 

@@ -13,6 +13,9 @@ class Worm:
         self.y = randint(-WORMS_PER_TEAM, 0)
         self.dead = False
         self.visible = False
+        self.jump_queue = []
+        self.jumping = False
+        self.frame_speed = FRAME_SPEED
 
     def fall(self):
         '''Increase y axis to fall, return True if make contact
@@ -34,12 +37,65 @@ class Worm:
         else:
             return True
 
+    def interrupt_if_dead(func):    # is this an appropriate use of a decorator?
+        def inner(self, direction, frame):
 
-    def move(self, direction, value):
-        if self.dead:
-            return 0
+            if self.dead:
+                return 0
+            else:
+                return func(self, direction, frame)
 
-        d = 1 if direction == "right" else -1
+        return inner
+
+    @interrupt_if_dead
+    def jump(self, direction, frame):
+        x_vel = 1 if direction == "r" else -1
+
+
+        if not self.jumping: # start of jump so populate queue
+            self.jumping = True
+            self.jump_queue = ([1] * frame) + ([-1] * frame)
+            self.frame_speed = FRAME_SPEED / 1.5
+            return self.frame_speed, frame
+        else:
+
+            try:
+                y_vel = self.jump_queue.pop(0)
+
+                self.frame_speed += y_vel/300
+                #print("Frame speed is {}".format(self.frame_speed))
+
+                self.x += x_vel
+                self.y -= y_vel
+
+                if self.grid[self.y][self.x] != " ":  # jump complete - platform
+                    return self.frame_speed, 0
+
+                return self.frame_speed, frame
+
+            except IndexError:
+                if self.grid[self.y][self.x] == " ": # jump complete - but now falling!
+                    landed = self.fall()
+                    if not landed:
+                        return self.frame_speed, frame
+                    else:
+                        return self.frame_speed, 0
+                else:
+                    self.jumping = False
+                    return self.frame_speed, 0 # jump complete - platform!
+
+
+
+
+
+    @interrupt_if_dead
+    def move(self, direction, frame):
+        # if self.dead:
+        #     return 0
+
+        vel = 1 if direction == "r" else -1
+
+        self.frame_speed += 0.01
 
         if self.grid[self.y+1][self.x] in ["/", "\\"]:
             self.y += 1
@@ -49,15 +105,15 @@ class Worm:
             pass
         else:
             if self.fall():
-                return 0
+                return self.frame_speed, 0
             else:
-                return value + 1
+                return self.frame_speed, frame
 
         if self.x == 0 or self.x == WIDTH-1:
             self.msgs.append(get_boundary_msg(self.name))
-            return 0
-        self.x += d
-        return value
+            return self.frame_speed, 0
+        self.x += vel
+        return self.frame_speed, frame - 1
 
 
 
