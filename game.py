@@ -130,16 +130,9 @@ Player {} --- your team will be named:
 
 
     def main_game_loop(self):
-        print("Commencing airdrop in...")
-        sleep(1)
-        for i in range(10, -1, -1):
-            print(f" {i}")
-            sleep(0.25)
-        print("AWAY!")
-        sleep(2)
-        system(CLEAR)
+
         self.world.air_drop()
-        system(CLEAR)
+
 
         game_over = False
         while not game_over:

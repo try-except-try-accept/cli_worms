@@ -2,6 +2,7 @@ from random import randint, shuffle
 from config import *
 from time import sleep
 from os import system
+from helpers import get_airdrop_msg
 
 ENTRY = randint(int(HEIGHT * 0.25), int(HEIGHT * 0.75))
 
@@ -29,14 +30,38 @@ class World:
             print(msg)
             sleep(1)
 
-    def air_drop(self):
+    def air_drop(self, start_game=True, dropped_items=None):
+                
+        if not start_game:
+            msg = get_airdrop_msg()
+            print(msg)
+            sleep(1)
+            self.msg_history.append("msg")
+            self.msg_history.append("An airdrop was received.")
+            countdown = 3
+
+        else:
+            countdown = 10
+            dropped_items = self.worms
+
+        print("Commencing airdrop in...")
+        sleep(1)
+        for i in range(countdown, -1, -1):
+            print(f" {i}")
+            sleep(0.25)
+        print("AWAY!")
+        sleep(2)
+        system(CLEAR)
+
         grounded = [False] * (WORMS_PER_TEAM * 2)
         while not all(grounded):
             system(CLEAR)
-            grounded = [w.fall() for w in self.worms]
+            grounded = [w.fall() for w in dropped_items]
             self.display_scenery()
             self.display_msg_history()
             sleep(FRAME_SPEED)
+
+        system(CLEAR)
 
 
     def act(self, worm, action):

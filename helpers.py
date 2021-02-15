@@ -25,6 +25,13 @@ went for a swim!""".split("\n")]
 
     return rand_choice(death_messages[cause])
 
+def get_airdrop_msg():
+    msgs = '''Gifts from the sky!
+And the heavens opened!
+Reinforcements!!!'''.split('\n')
+
+    return rand_choice(msgs)
+
 
 def get_losing_team_msg():
     msgs = '''was wiped off the face of the earth!
