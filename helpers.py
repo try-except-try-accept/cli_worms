@@ -13,15 +13,15 @@ def get_gravestone():
     return rand_choice(GRAVESTONES)
 
 
-def get_death_msg(cause):
+def get_death_msg(cause, gender):
 
     death_messages = ["""sunk to the bottom of the sea.
 died a salty death!
 was eaten by sharks.
 was fed to the fishes.
 sunk like an anchor!
-drowned their sorrows.
-went for a swim!""".split("\n")]
+drowned {} sorrows.
+went for a swim!""".format("his" if gender == "male" else "her").split("\n")]
 
     return rand_choice(death_messages[cause])
 
@@ -32,14 +32,16 @@ Reinforcements!!!'''.split('\n')
 
     return rand_choice(msgs)
 
-def get_boundary_msg(w):
-    gender_belong = rand_choice(["himself", "herself"])
+def get_boundary_msg(w, gender):
+
     msgs = '''{0} tried to escape!
 {0} made a run for it!
 ... and the end of the world was reached by {0}.
 {0} hit a brick wall!
-{0} found {1} in the Truman Show...
-No surrender, no departure {0}!'''.format(w, gender_belong).split("\n")
+{0} found {1}self in the Truman Show...
+No surrender, no departure {0}!'''.format(w, "him" if gender == "male" else "her").split("\n")
+
+
 
     return rand_choice(msgs)
 
