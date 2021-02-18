@@ -79,10 +79,11 @@ class World:
         elif command in ["ljump", "rjump"]:
             func = worm.jump
         elif command in ["shoot"]:
-            self.uxo.append(Arrow(worm.x, worm.y, self.grid, self.uxo))
+            projectile = Arrow(worm.x, worm.y, self.grid, self.remove_weapon)
+            self.uxo.append(projectile)
             func = self.uxo[-1].fire
 
-        while action_frame > 0:
+        while action_frame >= 0:
             system(CLEAR)
             frame_speed, action_frame = func(command[0], action_frame)
             self.display_scenery()

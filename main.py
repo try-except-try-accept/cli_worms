@@ -12,8 +12,8 @@ from game import Game
 # 5 fix maximum Y bound bug - dead if on platform
 # 6 prevent jumping off side of screen X
 # 7 stack up land X
-# 8 worms are always falling ish - gravity refactor
-# 8b stop being able to jump through terrain
+# 8 worms are always falling ish - gravity refactor X
+# 8b stop being able to jump through terrain X
 # 9 implement 'gun' animation X
 # 9b shoot angle
 # refactor sprite class X

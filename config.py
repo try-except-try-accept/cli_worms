@@ -18,22 +18,25 @@ INTRO_FRAME_SPEED = 0
 TEST_MODE = True
 GRAVITY = 0.9  # percentage change per frame
 
+STOP_ANIMATION = -1 # flag to signify animation should stop
+
 ACTIONS = [["left", 1, 30, "to move to the left by a number of characters."],
            ["right", 1, 10, "to move to the left by a number of characters."],
            ["ljump", 1, 10, "to jump leftwards by a specific height."],
            ["rjump", 1, 10, "to jump rightwards by a specific height."],
-           ["shoot", 0, 6, "to shoot in a certain direction."]]
+           ["shoot", 0, 359, "to shoot in a certain direction, 0 being upwards."]]
 
 
 
-D_MAP = [[1, -1, '🡥'],
+D_MAP = [[0, -1, '🡡'],
+         [1, -1, '🡥'],
          [1, 0, '🡪'],
          [1, 1, '🡦'],
          [0, 1, '🡣'],
          [-1, 1, '🡧'],
          [-1, 0, '🡨'],
-         [-1, -1, '🡤'],
-         [0, -1, '🡡']]
+         [-1, -1, '🡤']]
+
 
 CONFIG_MSGS = {
 

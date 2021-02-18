@@ -83,7 +83,7 @@ class Worm(Sprite):
             falling = True
         else:
             if self.grid[self.y][self.x] != " ":  # jump complete - hit platform
-                return self.frame_speed, 0
+                return self.frame_speed, STOP_ANIMATION
             elif len(self.jump_queue):     # yet to complete jump
                 y_vel = self.jump_queue.pop(0)
                 if y_vel > 0:
@@ -98,7 +98,7 @@ class Worm(Sprite):
         if falling:
             landed, momentum = self.fall()
             if landed:
-                return momentum, 0
+                return momentum, STOP_ANIMATION
 
         return self.frame_speed, frame_countdown
 
@@ -106,16 +106,11 @@ class Worm(Sprite):
     def move(self, direction, frame_countdown):
         vel = 1 if direction == "r" else -1
 
-
         momentum, landed = self.fall()  # if falling, cannot move until grounded.
         if not landed:
             return momentum, 1 if frame_countdown < 1 else frame_countdown
 
-
         self.frame_speed += 0.01
-
-        # if self.check_out_of_bounds(True):
-        #     return self.frame_speed, 0
 
         if vel == -1 and self.grid[self.y][self.x] == "\\":
              self.y -= 1
@@ -124,7 +119,7 @@ class Worm(Sprite):
 
         self.x += vel
         if self.check_out_of_bounds(out_of_bounds_next_step=self.out_of_bounds_msg):
-            return self.frame_speed, 0
+            return self.frame_speed, STOP_ANIMATION
 
         return self.frame_speed, frame_countdown - 1
 

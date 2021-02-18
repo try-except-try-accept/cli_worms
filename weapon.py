@@ -3,11 +3,16 @@ from sprite import Sprite
 
 class Weapon(Sprite):
 
-    def __init__(self, x, y, grid):
+    def __init__(self, x, y, grid, destructor ):
 
         super().__init__(x, y, '', False)
         super().set_grid(grid)
         self.explosion_queue = list(EXPLOSIONS)
+        self.destructor = destructor
+
+
+    def delete(self):
+        self.destructor(self)
 
 
 
@@ -15,22 +20,29 @@ class Weapon(Sprite):
 
 class Arrow(Weapon):
 
-    def __init__(self, x, y, grid, parent_list):
-        super().__init__(x, y, grid)
-        self.parent_list = parent_list
+    def __init__(self, x, y, grid, destructor):
+        super().__init__(x, y, grid, destructor)
 
-
-    def delete(self):
-        self.parent_list.remove(self)
 
 
     def fire(self, cmd, direction):
-        self.x += D_MAP[direction][0]
-        self.y += D_MAP[direction][1]
-        self.symbol = D_MAP[direction][2]
 
-        if self.check_out_of_bounds(check_vert=True, resultant_action=self.delete):
-            return 0, 0
+        octile = (direction // 45)
+
+        x_vel = D_MAP[octile][0]
+        y_vel = D_MAP[octile][1]
+
+
+
+        self.symbol = D_MAP[octile][2]
+
+        self.x += x_vel
+        self.y += y_vel
+        
+
+
+        if self.check_out_of_bounds(check_top=True, check_bottom=True, check_horiz=True, out_of_bounds_next_step=self.delete):
+            return 0, STOP_ANIMATION
 
 
         if self.grid[self.y][self.x] != " ":
