@@ -17,7 +17,7 @@ class Worm(Sprite):
         self.jump_queue = []
         self.jumping = False
         self.frame_speed = FRAME_SPEED
-        self.falling = False
+
         self.gender = rand_choice(["male", "female"])
 
     def __gt__(self, other):
@@ -62,51 +62,49 @@ class Worm(Sprite):
 
     def end_action(self):
         self.jumping = False
-        self.falling = False
+
 
     @interrupt_if_dead
-    def jump(self, direction, frame):
+    def jump(self, direction, frame_countdown):
 
         x_vel = 1 if direction == "r" else -1
+        falling = False
 
-        if self.falling:
-            landed = self.fall()
-            if not landed:
-                return self.frame_speed, frame
-            else:
-                return self.frame_speed, 0
-
-        elif not self.jumping: # start of jump so populate queue
+        if not self.jumping: # start of jump so populate queue
             self.jumping = True
-            self.jump_queue = ([1] * frame) + ([-1] * frame)
+            self.jump_queue = ([1] * frame_countdown) + ([-1] * frame_countdown)
             self.frame_speed = FRAME_SPEED / 1.5
             self.y -= 1
 
-        elif self.check_out_of_bounds():
-            self.falling = True
+        elif self.check_out_of_bounds(): # hit edge of screen so start to fall
+            falling = True
         else:
-
-            if len(self.jump_queue):
+            if self.grid[self.y][self.x] != " ":  # jump complete - hit platform
+                return self.frame_speed, 0
+            elif len(self.jump_queue):     # yet to complete jump
                 y_vel = self.jump_queue.pop(0)
-
                 self.frame_speed += y_vel/300
-                #print("Frame speed is {}".format(self.frame_speed))
-
                 self.x += x_vel
                 self.y -= y_vel
+            else:                       # finished jump, no platform, must be falling!
+                falling = True
 
-
-            elif self.grid[self.y][self.x] != " ":  # jump complete - platform
+        if falling:
+            landed = self.fall()
+            if landed:
                 return self.frame_speed, 0
-            else:
-                self.falling = True
 
-
-        return self.frame_speed, frame
+        return self.frame_speed, frame_countdown
 
     @interrupt_if_dead
-    def move(self, direction, frame):
+    def move(self, direction, frame_countdown):
         vel = 1 if direction == "r" else -1
+
+
+        landed = self.fall()  # if falling, cannot move until grounded.
+        if not landed:
+            return self.frame_speed, 1 if frame_countdown < 1 else frame_countdown
+
 
         self.frame_speed += 0.01
 
@@ -119,12 +117,10 @@ class Worm(Sprite):
              self.y -= 1
 
         self.x += vel
-        if self.check_out_of_bounds(off_screen_next_step=self.out_of_bounds_msg):
+        if self.check_out_of_bounds(out_of_bounds_next_step=self.out_of_bounds_msg):
             return self.frame_speed, 0
 
-        self.fall()
-
-        return self.frame_speed, frame - 1
+        return self.frame_speed, frame_countdown - 1
 
     def name_pos_check(self, grid_x, grid_y):
         '''Check grid pos against worm pos, return True if name

@@ -8,13 +8,12 @@ class Sprite:
         self.y = y
         self.symbol = symbol
         self.visible = True
-        self.momentum = 0
 
     def set_grid(self, grid):
         self.grid = grid
 
 
-    def check_out_of_bounds(self, check_horiz=True, check_bottom=False, check_top=False, off_screen_next_step=print):
+    def check_out_of_bounds(self, check_horiz=True, check_bottom=False, check_top=False, out_of_bounds_next_step=print):
         reset_y, reset_x = None, None
 
 
@@ -38,7 +37,7 @@ class Sprite:
         else:
             return False
 
-        off_screen_next_step() # call bound function to deal with out-of-bounds
+        out_of_bounds_next_step() # call bound function to deal with out-of-bounds
         return True
 
 
