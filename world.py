@@ -32,6 +32,9 @@ class World:
             print(msg)
             sleep(1)
 
+
+
+
     def air_drop(self, start_game=True, dropped_items=None):
 
         if not start_game:

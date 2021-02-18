@@ -38,6 +38,8 @@ class Worm(Sprite):
     def fall(self):
         '''Increase y axis to fall, return True if make contact
         with scenery - False if not yet'''
+
+
         if self.dead:   return True, 1
 
         if self.grid[self.y][self.x] == " ":
@@ -47,17 +49,20 @@ class Worm(Sprite):
             if self.y >= 0:          # random fall points - do not show until visible
                 self.visible = True
 
-            if not self.check_out_of_bounds(check_bottom=True, check_horiz=False, out_of_bounds_next_step=self.die):
-                return False, self.fall_momentum
+            if self.check_out_of_bounds(check_bottom=True, check_horiz=False, out_of_bounds_next_step=self.die):
+                return True, self.fall_momentum
 
 
+            return False, self.fall_momentum
+
+        self.fall_momentum = FRAME_SPEED
         return True, self.fall_momentum
 
     def interrupt_if_dead(func):    # is this an appropriate use of a decorator?
         def inner(self, direction, frame):
 
             if self.dead:
-                return 0, 0
+                return 0, STOP_ANIMATION
             else:
                 return func(self, direction, frame)
 
@@ -106,7 +111,7 @@ class Worm(Sprite):
     def move(self, direction, frame_countdown):
         vel = 1 if direction == "r" else -1
 
-        momentum, landed = self.fall()  # if falling, cannot move until grounded.
+        landed, momentum = self.fall()  # if falling, cannot move until grounded.
         if not landed:
             return momentum, 1 if frame_countdown < 1 else frame_countdown
 

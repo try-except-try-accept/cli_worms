@@ -17,6 +17,7 @@ MAX_GAP_LENGTH = 5
 INTRO_FRAME_SPEED = 0
 TEST_MODE = True
 GRAVITY = 0.9  # percentage change per frame
+ARROW_LIFE = 10 # how many frames does an arrow last before exploding?
 
 STOP_ANIMATION = -1 # flag to signify animation should stop
 
