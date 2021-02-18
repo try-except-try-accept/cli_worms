@@ -10,12 +10,12 @@ WORMS_PER_TEAM = 3
 HEIGHT = 30
 WIDTH = 200
 FRAME_SPEED = 0.125
-MAX_TEAM_SIGNUP = 0
-MIN_TEAM_SIGNUP = 0
+MAX_TEAM_SIGNUP = 5
+MIN_TEAM_SIGNUP = 2
 NAME_DISTANCE = 3
 MIN_GAP_LENGTH = 1
 MAX_GAP_LENGTH = 5
-INTRO_FRAME_SPEED = 0
+INTRO_FRAME_SPEED = 1
 MESSAGE_QUEUE_FRAME_RATE = 0.25
 TEST_MODE = True
 GRAVITY = 0.9  # percentage change per frame
@@ -29,7 +29,9 @@ ACTIONS = [["left", 1, 30, "to move to the left by a number of characters."],
            ["right", 1, 10, "to move to the left by a number of characters."],
            ["ljump", 1, 10, "to jump leftwards by a specific height."],
            ["rjump", 1, 10, "to jump rightwards by a specific height."],
+           ["mine", 1, 30, "to lay a mine for x frames."],
            ["shoot", ORIENTATIONS, None, "to shoot in a certain direction:"]]
+
 
 
 ANGLES = create_angles()

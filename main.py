@@ -15,7 +15,7 @@ from game import Game
 # 8 worms are always falling ish - gravity refactor X
 # 8b stop being able to jump through terrain X
 # 9 implement 'gun' animation X
-# 9b shoot angle
+# 9b shoot angle X
 # refactor sprite class X
 # garbage collect X
 # 10 implement 'mine' animation

@@ -19,6 +19,7 @@ class World:
         shuffle(worms)
         self.worms = worms
         self.uxo = []
+        self.mines = []
 
     def display_msg_history(self):
         print()
@@ -104,34 +105,42 @@ class World:
         except ValueError:
             return ORIENTATIONS.index(action_frame)
 
-    def enact(self, worm, action):
+    def enact(self, sprite, action):
         command, action_frame = action.lower().split(" ")
         action_frame = self.convert_action(action_frame)
 
         if command in ["left", "right"]:
-            animation_func = worm.move
+            animation_func = sprite.move
         elif command in ["ljump", "rjump"]:
-            animation_func = worm.jump
+            animation_func = sprite.jump
         elif command in ["shoot"]:
-            projectile = Arrow(worm.x, worm.y, self.grid, self.remove_weapon)
+            projectile = Arrow(sprite.x, sprite.y, self.grid, self.remove_weapon)
             self.uxo.append(projectile)
             animation_func = projectile.fire
         elif command == "mine":
-            mine = Mine(worm.x, worm.y, self.grid, self.remove_weapon, action_frame)
+            mine = Mine(sprite.x, sprite.y, self.grid, self.remove_weapon, action_frame)
             self.uxo.append(mine)
+            self.mines.append(mine)
             animation_func = None
+        elif command == "explode":
+            self.mines.remove(sprite)
+            self.uxo.remove(sprite)
+            animation_func = sprite.explode
 
         if animation_func is not None:
 
             while action_frame >= 0:
                 system(CLEAR)
                 frame_speed, action_frame = animation_func(command[0], action_frame)
+                for m in self.mines:
+                    if m.check_xplode():
+                        self.enact(m, "explode {}".format(m.power)) # should this use recursion?
 
                 self.display_scenery()
                 self.display_msg_history()
                 sleep(frame_speed)
 
-        worm.end_action()
+        sprite.end_action()
 
     def create_scenery(self):
         grid = [[' ' for i in range(WIDTH)] for j in range(HEIGHT)]
@@ -177,7 +186,7 @@ class World:
         #     worm_whose_turn = list(" ↙ " + (current_turn.name.split(" ")[0]))
 
 
-        sprites = self.worms + self.uxo
+        sprites = self.uxo + self.worms
 
 
         for y, row in enumerate(self.grid):

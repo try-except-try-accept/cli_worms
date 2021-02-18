@@ -3,18 +3,51 @@ from sprite import Sprite
 
 class Weapon(Sprite):
 
-    def __init__(self, x, y, grid, destructor ):
+    def __init__(self, x, y, grid, destructor):
 
         super().__init__(x, y, '', False)
         super().set_grid(grid)
-        self.explosion_queue = list(EXPLOSIONS)
+        self.power = 10
+        self.explosion_queue = (list(EXPLOSIONS) * 5)[:self.power]
         self.destructor = destructor
         self.existence = 0
+        self.visible = True
+
+
 
 
     def delete(self):
         self.destructor(self)
 
+    def explode(self, cmd, explode_level):
+
+        self.symbol = self.explosion_queue.pop(0)
+        self.power -= 1
+        for x, y, _ in D_MAP:
+            self.grid[self.y+(y*self.power)][self.x+(x*self.power)] = " "
+
+        explode_level -= 1
+        return FRAME_SPEED, explode_level
+
+
+
+
+
+class Mine(Weapon):
+    def __init__(self, x, y, grid, destructor, frames):
+        super().__init__(x, y, grid, destructor)
+        self.power = frames // 4
+        self.symbol = "‗"
+        self.explode_at_frame = frames
+        self.set_label()
+
+    def set_label(self):
+        self.label = list(" ↙ " + str(self.explode_at_frame - self.existence))
+
+    def check_xplode(self):
+        self.existence += 1
+        self.set_label()
+        return self.existence >= self.explode_at_frame
 
 
 

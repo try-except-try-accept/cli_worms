@@ -14,6 +14,9 @@ class Sprite:
     def set_grid(self, grid):
         self.grid = grid
 
+    def end_action(self):
+        pass
+
 
     def set_label(self):
         self.label = list(" ↙ " + (self.name.split(" ")[0]))

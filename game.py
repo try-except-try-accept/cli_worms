@@ -132,8 +132,11 @@ Player {} --- your team will be named:
 
             for worm in self.world.worms:
 
+
                 if TEST_MODE:
                     worm = min([w for w in self.world.worms if not w.dead])
+
+                worm.set_label()
 
                 game_over = self.check_end_game()
 
