@@ -30,6 +30,11 @@ class Worm(Sprite):
     def out_of_bounds_msg(self):
         self.msgs.append(get_boundary_msg(self.name, self.gender))
 
+    def die(self):
+        self.symbol = get_gravestone()
+        self.dead = True
+        self.msgs.append("{} {} {}".format(self.symbol, self.name, get_death_msg(0, self.gender)))
+
     def fall(self):
         '''Increase y axis to fall, return True if make contact
         with scenery - False if not yet'''
@@ -41,10 +46,7 @@ class Worm(Sprite):
             if self.y >= 0:          # random fall points - do not show until visible
                 self.visible = True
 
-            if self.y == len(self.grid) - 2:
-                self.symbol = get_gravestone()
-                self.dead = True
-                self.msgs.append("{} {} {}".format(self.symbol, self.name, get_death_msg(0, self.gender)))
+            if self.check_out_of_bounds(check_bottom=True, check_horiz=False, out_of_bounds_next_step=self.die):
                 return True
             return False
         else:
