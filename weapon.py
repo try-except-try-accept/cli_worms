@@ -27,39 +27,42 @@ class Arrow(Weapon):
 
 
     def fire(self, cmd, direction):
+
+        c_points = len(ORIENTATIONS)
+
         self.existence += 1
 
-        octile = (direction // 45)
+        octile = int(8 * (direction / c_points))
 
-        x_vel = D_MAP[octile][0]
-        y_vel = D_MAP[octile][1]
+        angle = int(len(ANGLES) * (direction / c_points))
+
+        x_vel = ANGLES[angle][0]
+        y_vel = ANGLES[angle][1]
+
+#         print("""direction {}
+# octile {}
+# x_vel {}
+# y_vel {}""".format(direction, octile, x_vel, y_vel))
 
         self.symbol = D_MAP[octile][2]
 
-        octile_offset = direction % 45
-
-        if octile_offset != 0:
-            axis_alter = octile_offset//3
-            if direction % 2 == 0:
-                x_vel *= axis_alter
-                y_vel *= (axis_alter - 1)
-
-            else:
-                y_vel *= axis_alter
-                x_vel *= (axis_alter - 1)
-
-
-
         self.x += x_vel
         self.y += y_vel
+        max_velocity = max([1, abs(x_vel), abs(y_vel)])
 
-        frame_rate = FRAME_SPEED * max([1, x_vel, y_vel])
+        #input(str("max vel is {}".format(max_velocity)))
+
+        frame_rate = FRAME_SPEED*max_velocity
+
 
         if self.check_out_of_bounds(check_top=True, check_bottom=True, check_horiz=True, out_of_bounds_next_step=self.delete):
             return 0, STOP_ANIMATION
 
+        if self.existence > ARROW_LIFE:
+            self.visible = False
+            return frame_rate, -1
 
-        if self.grid[self.y][self.x] != " " or self.existence > ARROW_LIFE:
+        if self.grid[self.y][self.x] != " ":
             if len(self.explosion_queue):
                 self.symbol = self.explosion_queue.pop(0)
             else:

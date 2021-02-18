@@ -1,3 +1,4 @@
+from helpers import create_angles
 import platform
 
 if platform.system() == "Windows":
@@ -15,17 +16,23 @@ NAME_DISTANCE = 3
 MIN_GAP_LENGTH = 1
 MAX_GAP_LENGTH = 5
 INTRO_FRAME_SPEED = 0
+MESSAGE_QUEUE_FRAME_RATE = 0.25
 TEST_MODE = True
 GRAVITY = 0.9  # percentage change per frame
-ARROW_LIFE = 10 # how many frames does an arrow last before exploding?
+ARROW_LIFE = 30 # how many frames does an arrow last before exploding?
 
 STOP_ANIMATION = -1 # flag to signify animation should stop
+
+ORIENTATIONS = ["n", "nne", "ne", "ene", "e", "ese", "se", "sse", "s", "ssw", "sw", "wsw", "w", "wnw", "nw", "nnw"]
 
 ACTIONS = [["left", 1, 30, "to move to the left by a number of characters."],
            ["right", 1, 10, "to move to the left by a number of characters."],
            ["ljump", 1, 10, "to jump leftwards by a specific height."],
            ["rjump", 1, 10, "to jump rightwards by a specific height."],
-           ["shoot", 0, 359, "to shoot in a certain direction, 0 being upwards."]]
+           ["shoot", ORIENTATIONS, None, "to shoot in a certain direction:"]]
+
+
+ANGLES = create_angles()
 
 
 

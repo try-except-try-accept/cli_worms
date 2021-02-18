@@ -30,9 +30,34 @@ class World:
             msg = self.msg_queue.pop(0)
             self.msg_history.append(msg)
             print(msg)
-            sleep(1)
+            sleep(MESSAGE_QUEUE_FRAME_RATE)
 
 
+    def weapons_test(self):
+
+        ox, oy = WIDTH // 2, HEIGHT // 2
+        max_x, max_y = ox+10, oy+10
+        min_x, min_y = ox-10, oy-10
+        for i, j in ANGLES:
+            x, y = ox, oy
+            symbol = chr(randint(65, 90))
+
+            while x < WIDTH and min_x< x<max_x and y < HEIGHT and min_y<y<max_y:
+                self.grid[y][x] = symbol
+                x += i
+                y += j
+                print()
+                self.display_scenery()
+
+                sleep(0.1)
+                system(CLEAR)
+            self.display_scenery()
+
+            self.display_msg_history()
+            m = "{}: tested {} {}".format(symbol, i, j)
+            print(m)
+            self.msg_history.append(m)
+            input()
 
 
     def air_drop(self, start_game=True, dropped_items=None):
@@ -73,9 +98,15 @@ class World:
     def remove_weapon(self, item):
         self.uxo.remove(item)
 
+    def convert_action(self, action_frame):
+        try:
+            return int(action_frame)
+        except ValueError:
+            return ORIENTATIONS.index(action_frame)
+
     def enact(self, worm, action):
-        command, action_frame = action.split(" ")
-        action_frame = int(action_frame)
+        command, action_frame = action.lower().split(" ")
+        action_frame = self.convert_action(action_frame)
 
         if command in ["left", "right"]:
             func = worm.move
@@ -89,9 +120,11 @@ class World:
         while action_frame >= 0:
             system(CLEAR)
             frame_speed, action_frame = func(command[0], action_frame)
+
             self.display_scenery()
             self.display_msg_history()
             sleep(frame_speed)
+
         worm.end_action()
 
     def create_scenery(self):

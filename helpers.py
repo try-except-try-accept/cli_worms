@@ -112,3 +112,66 @@ def random_name(worm_name=False):
                     name += name[-1] + rand_choice("y,o,a,ee,ox".split(","))
 
     return name.title().replace("  ", " ").replace("'S", "'s")
+
+
+
+def graph_test():
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import math
+    x = np.arange(0, math.pi * 2, 0.05)
+    fig = plt.figure()
+
+
+
+    a = create_angles()
+    for angle in a:
+        fig.add_subplot()
+        x = np.arange(0, 1000, angle[0])
+        y = np.arange(0, 1000, angle[0])
+        fig[-1].plot(x, y)
+
+        fig[-1].set_title('{}'.format(angle))
+
+
+    plt.show()
+
+
+def create_angles():
+    a = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]
+    jump = 1
+    for j in range(4):
+
+        a_copy = list(a)
+        a_index = 1
+        append = False
+        for j in range(len(a)):
+            this_pair = a[j]
+            try:
+                next_pair = a[j + 1]
+            except IndexError:
+                next_pair = a[0]
+                append = True
+            #print("bisect {} and {}".format(this_pair, next_pair))
+            new_pair = [this_pair[0] + next_pair[0], this_pair[1] + next_pair[1]]
+            #print(new_pair)
+            x = new_pair[0]
+            y = new_pair[1]
+
+
+            if append:
+                a_copy.append(new_pair)
+            else:
+                a_copy.insert(j + a_index, new_pair)
+
+            a_index += 1
+        a = list(a_copy)
+        #print(a_copy)
+
+
+
+    return a_copy
+
+
+
+

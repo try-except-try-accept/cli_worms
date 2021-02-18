@@ -115,6 +115,9 @@ class Worm(Sprite):
         if not landed:
             return momentum, 1 if frame_countdown < 1 else frame_countdown
 
+
+
+
         self.frame_speed += 0.01
 
         if vel == -1 and self.grid[self.y][self.x] == "\\":
@@ -122,9 +125,11 @@ class Worm(Sprite):
         elif vel == 1 and self.grid[self.y][self.x] == "/":
              self.y -= 1
 
-        self.x += vel
+
         if self.check_out_of_bounds(out_of_bounds_next_step=self.out_of_bounds_msg):
             return self.frame_speed, STOP_ANIMATION
+
+        self.x += vel
 
         return self.frame_speed, frame_countdown - 1
 

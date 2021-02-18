@@ -87,10 +87,16 @@ Player {} --- your team will be named:
     def action_help(self):
         print("")
         for a, min_, max_, exp in ACTIONS:
-            print(f"   - Type {a} x to {exp}. Minimum value for x is {min_}, maximum is {max_}.")
+            print(f"   - Type {a} x to {exp}:", end=" ")
+            if type(min_) == int:
+                print("minimum value for x is {min_}, maximum is {max_}.")
+            else:
+                options = min_   # is this bad practice?
+                print(" / ".join([i.upper() for i in options[:8]]) + " etc.")
         print()
 
     def validate_action(self, command):
+        command = command.lower()
         if command == "help":
             return self.action_help()
         try:
@@ -99,6 +105,9 @@ Player {} --- your team will be named:
             return False
         for a, min_, max_, exp in ACTIONS:
             if cmd == a:
+                if type(min_) is list:
+                    options = min_
+                    return param in options
                 if param.isdigit():
                     param = int(param)
                     if param >= min_ and param <= max_:
@@ -115,6 +124,8 @@ Player {} --- your team will be named:
     def main_game_loop(self):
 
         self.world.air_drop()
+
+        #self.world.weapons_test()
 
         game_over = False
         while not game_over:
@@ -139,9 +150,14 @@ Player {} --- your team will be named:
                     self.msg_history.append(turn_msg.replace("It's", "It was"))
                     print(turn_msg)
                     action = input("Enter a command or type HELP for guidance! ")
+                    if action == "shootall":
+                        for i in range(1, 17):
+                            self.world.enact(worm, "shoot {}".format(i))
+
                     while not self.validate_action(action):
                         action = input("Enter a command: ")
                     self.msg_history.append(f"{worm.name} decided to *{action}*")
+
 
                     self.world.enact(worm, action)
 
