@@ -8,10 +8,10 @@ class Worm(Sprite):
     def __init__(self, name, team, start_x, symbol, msg_queue):
         x = start_x
         y = randint(-WORMS_PER_TEAM, 0)
-        super().__init__(x, y, symbol, False)
+        super().__init__(x, y, symbol, False, name)
 
         self.msgs = msg_queue
-        self.name = name
+
         self.team = team
         self.dead = False
         self.jump_queue = []
@@ -32,6 +32,7 @@ class Worm(Sprite):
 
     def die(self):
         self.symbol = get_gravestone()
+        self.label = ""
         self.dead = True
         self.msgs.append("{} {} {}".format(self.symbol, self.name, get_death_msg(0, self.gender)))
 
@@ -133,11 +134,4 @@ class Worm(Sprite):
 
         return self.frame_speed, frame_countdown - 1
 
-    def name_pos_check(self, grid_x, grid_y):
-        '''Check grid pos against worm pos, return True if name
-        of worm should be displayed'''
-        if grid_x >= self.x:
-            if grid_y == self.y - NAME_DISTANCE:
-                return True
-        return False
 

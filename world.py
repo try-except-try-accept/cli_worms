@@ -3,7 +3,7 @@ from config import *
 from time import sleep
 from os import system
 from helpers import get_airdrop_msg
-from weapon import Arrow
+from weapon import Arrow, Mine
 
 ENTRY = randint(int(HEIGHT * 0.33), int(HEIGHT * 0.66))
 
@@ -109,21 +109,27 @@ class World:
         action_frame = self.convert_action(action_frame)
 
         if command in ["left", "right"]:
-            func = worm.move
+            animation_func = worm.move
         elif command in ["ljump", "rjump"]:
-            func = worm.jump
+            animation_func = worm.jump
         elif command in ["shoot"]:
             projectile = Arrow(worm.x, worm.y, self.grid, self.remove_weapon)
             self.uxo.append(projectile)
-            func = self.uxo[-1].fire
+            animation_func = projectile.fire
+        elif command == "mine":
+            mine = Mine(worm.x, worm.y, self.grid, self.remove_weapon, action_frame)
+            self.uxo.append(mine)
+            animation_func = None
 
-        while action_frame >= 0:
-            system(CLEAR)
-            frame_speed, action_frame = func(command[0], action_frame)
+        if animation_func is not None:
 
-            self.display_scenery()
-            self.display_msg_history()
-            sleep(frame_speed)
+            while action_frame >= 0:
+                system(CLEAR)
+                frame_speed, action_frame = animation_func(command[0], action_frame)
+
+                self.display_scenery()
+                self.display_msg_history()
+                sleep(frame_speed)
 
         worm.end_action()
 
@@ -167,22 +173,25 @@ class World:
         return grid
 
     def display_scenery(self, current_turn=None):
-        if current_turn is not None:
-            worm_whose_turn = list(" ↙ " + (current_turn.name.split(" ")[0]))
+        # if current_turn is not None:
+        #     worm_whose_turn = list(" ↙ " + (current_turn.name.split(" ")[0]))
+
+
+        sprites = self.worms + self.uxo
+
 
         for y, row in enumerate(self.grid):
             for x, cell in enumerate(row):
+                for sprite in sprites:
+                    if sprite.label_check(x, y):
+                        print(sprite.label.pop(0), end="")
+                        break
+                    elif sprite.visible and sprite.x == x and sprite.y == y:
+                        print(sprite.symbol, end="")
+                        break
 
-                if current_turn and current_turn.name_pos_check(x, y) and len(worm_whose_turn):
-                    print(worm_whose_turn.pop(0), end="")
                 else:
-                    for sprite in self.worms + self.uxo:
-                        if sprite.visible and sprite.x == x and sprite.y == y:
-                            print(sprite.symbol, end="")
-                            break
-
-                    else:
-                        print(cell, end="")
+                    print(cell, end="")
             print()
 
 
