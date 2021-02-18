@@ -16,6 +16,7 @@ MIN_GAP_LENGTH = 1
 MAX_GAP_LENGTH = 5
 INTRO_FRAME_SPEED = 0
 TEST_MODE = True
+GRAVITY = 0.9  # percentage change per frame
 
 ACTIONS = [["left", 1, 30, "to move to the left by a number of characters."],
            ["right", 1, 10, "to move to the left by a number of characters."],

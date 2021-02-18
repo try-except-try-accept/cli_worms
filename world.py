@@ -58,10 +58,12 @@ class World:
         grounded = [False] * (WORMS_PER_TEAM * 2)
         while not all(grounded):
             system(CLEAR)
-            grounded = [w.fall() for w in dropped_items]
+            falling_data = [w.fall() for w in dropped_items]
+            frame_speed = sum([w[1] for w in falling_data]) / len(falling_data)
+            grounded = [w[0] for w in falling_data]
             self.display_scenery()
             self.display_msg_history()
-            sleep(FRAME_SPEED)
+            sleep(frame_speed)
 
         system(CLEAR)
 
