@@ -18,10 +18,13 @@ from game import Game
 # 9b shoot angle X
 # refactor sprite class X
 # garbage collect X
-# 10 implement 'mine' animation
-# 11 implement 'bomb' animation
+# 10 implement 'mine' animation X
+# 10a frame handler - all worms and mines run func per frame
+# 10b worms fall through gaps caused by mines
+# 11 implement 'grenade' animation - parabola, explode on impact
 # 12 implement worm damage  / HP
-# 13 implement terrain damage
+# 13 implement terrain damage for arrows
+# 14 weapon select
 #
 
 

@@ -179,6 +179,8 @@ class World:
         except:
             pass
 
+        #grid.append(["~"] * WIDTH)
+
         return grid
 
     def display_scenery(self, current_turn=None):

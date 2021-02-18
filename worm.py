@@ -55,12 +55,17 @@ class Worm(Sprite):
 
 
             return False, self.fall_momentum
+        elif self.grid[self.y][self.x] == "~":
+            self.dead = True
+            return True, self.fall_momentum
 
         self.fall_momentum = FRAME_SPEED
         return True, self.fall_momentum
 
     def interrupt_if_dead(func):    # is this an appropriate use of a decorator?
         def inner(self, direction, frame):
+            if self.grid[self.y][self.x] == "~":
+                self.dead = True
 
             if self.dead:
                 return 0, STOP_ANIMATION
