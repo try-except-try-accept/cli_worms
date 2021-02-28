@@ -18,7 +18,7 @@
 
 ### 4. `left` and `right` commands control movement
 
-![left and right commands in action](images/left_right_commands.gif)
+![left and right commands in action](images/left_right_command.gif)
 
 ### 5. `ljump` and `rjump` to jump
 
