@@ -45,7 +45,7 @@ class Game:
             if gen:
                 team = random_name()
             else:
-                print(f"Player {p} ({team_symbol}) --- enter team name:\n\n")
+                print(f"Player {p} ({team_symbol}) --- enter team name:")
                 team = input()
                 while len(team) < 4:
                     team = input("No - please give a team name: ")
@@ -63,7 +63,7 @@ Player {} --- your team will be named:
                 if gen:
                     worm_name = random_name(True)
                 else:
-                    print(f"Player {p} --- enter name for worm {i}:\n\n")
+                    print(f"Player {p} --- enter name for worm {i}:")
                     worm_name = input()
                     while len(worm_name) < 4:
                         worm_name = input("No - please give a worm name: ")
